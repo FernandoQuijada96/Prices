@@ -1,6 +1,5 @@
-package com.example.prices.repository;
+package com.example.prices.infrastructure.adapter.out.persistence;
 
-import com.example.prices.model.PriceEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -8,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-public interface PriceRepository extends JpaRepository<PriceEntity, Long> {
+public interface PriceJpaRepository extends JpaRepository<PriceEntity, Long> {
 
     @Query("""
                 SELECT p FROM PriceEntity p

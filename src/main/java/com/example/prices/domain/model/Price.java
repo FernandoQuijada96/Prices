@@ -1,9 +1,9 @@
-package com.example.prices.dto;
+package com.example.prices.domain.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public record PriceResponse(
+public record Price(
         Integer productId,
         Integer brandId,
         Integer priceList,
@@ -12,3 +12,4 @@ public record PriceResponse(
         BigDecimal price
 ) {
 }
+

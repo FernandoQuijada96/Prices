@@ -1,4 +1,4 @@
-package com.example.prices.model;
+package com.example.prices.infrastructure.adapter.out.persistence;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

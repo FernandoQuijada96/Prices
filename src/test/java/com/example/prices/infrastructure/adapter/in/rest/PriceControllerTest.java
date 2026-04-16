@@ -1,7 +1,7 @@
-package com.example.prices.controller;
+package com.example.prices.infrastructure.adapter.in.rest;
 
-import com.example.prices.dto.PriceResponse;
-import com.example.prices.service.PriceService;
+import com.example.prices.domain.model.Price;
+import com.example.prices.domain.port.in.GetPriceUseCase;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,7 +24,7 @@ class PriceControllerTest {
     private static final Integer BRAND_ID = 1;
 
     @Mock
-    private PriceService priceService;
+    private GetPriceUseCase getPriceUseCase;
     @InjectMocks
     private PriceController priceController;
 
@@ -32,13 +32,13 @@ class PriceControllerTest {
     void givenDay14At10_whenGetPrice_thenReturnsPriceList1WithPrice3550() {
         // Given
         LocalDateTime date = LocalDateTime.of(2020, 6, 14, 10, 0);
-        PriceResponse expected = new PriceResponse(PRODUCT_ID, BRAND_ID, 1,
+        Price price = new Price(PRODUCT_ID, BRAND_ID, 1,
                 LocalDateTime.of(2020, 6, 14, 0, 0),
                 LocalDateTime.of(2020, 12, 31, 23, 59, 59),
                 new BigDecimal("35.50"));
 
-        when(priceService.getApplicablePrice(date, PRODUCT_ID, BRAND_ID))
-                .thenReturn(Optional.of(expected));
+        when(getPriceUseCase.getApplicablePrice(date, PRODUCT_ID, BRAND_ID))
+                .thenReturn(Optional.of(price));
 
         // When
         ResponseEntity<PriceResponse> response = priceController.getPrice(date, PRODUCT_ID, BRAND_ID);
@@ -54,13 +54,13 @@ class PriceControllerTest {
     void givenDay14At16_whenGetPrice_thenReturnsPriceList2WithPrice2545() {
         // Given
         LocalDateTime date = LocalDateTime.of(2020, 6, 14, 16, 0);
-        PriceResponse expected = new PriceResponse(PRODUCT_ID, BRAND_ID, 2,
+        Price price = new Price(PRODUCT_ID, BRAND_ID, 2,
                 LocalDateTime.of(2020, 6, 14, 15, 0),
                 LocalDateTime.of(2020, 6, 14, 18, 30),
                 new BigDecimal("25.45"));
 
-        when(priceService.getApplicablePrice(date, PRODUCT_ID, BRAND_ID))
-                .thenReturn(Optional.of(expected));
+        when(getPriceUseCase.getApplicablePrice(date, PRODUCT_ID, BRAND_ID))
+                .thenReturn(Optional.of(price));
 
         // When
         ResponseEntity<PriceResponse> response = priceController.getPrice(date, PRODUCT_ID, BRAND_ID);
@@ -76,13 +76,13 @@ class PriceControllerTest {
     void givenDay14At21_whenGetPrice_thenReturnsPriceList1WithPrice3550() {
         // Given
         LocalDateTime date = LocalDateTime.of(2020, 6, 14, 21, 0);
-        PriceResponse expected = new PriceResponse(PRODUCT_ID, BRAND_ID, 1,
+        Price price = new Price(PRODUCT_ID, BRAND_ID, 1,
                 LocalDateTime.of(2020, 6, 14, 0, 0),
                 LocalDateTime.of(2020, 12, 31, 23, 59, 59),
                 new BigDecimal("35.50"));
 
-        when(priceService.getApplicablePrice(date, PRODUCT_ID, BRAND_ID))
-                .thenReturn(Optional.of(expected));
+        when(getPriceUseCase.getApplicablePrice(date, PRODUCT_ID, BRAND_ID))
+                .thenReturn(Optional.of(price));
 
         // When
         ResponseEntity<PriceResponse> response = priceController.getPrice(date, PRODUCT_ID, BRAND_ID);
@@ -98,13 +98,13 @@ class PriceControllerTest {
     void givenDay15At10_whenGetPrice_thenReturnsPriceList3WithPrice3050() {
         // Given
         LocalDateTime date = LocalDateTime.of(2020, 6, 15, 10, 0);
-        PriceResponse expected = new PriceResponse(PRODUCT_ID, BRAND_ID, 3,
+        Price price = new Price(PRODUCT_ID, BRAND_ID, 3,
                 LocalDateTime.of(2020, 6, 15, 0, 0),
                 LocalDateTime.of(2020, 6, 15, 11, 0),
                 new BigDecimal("30.50"));
 
-        when(priceService.getApplicablePrice(date, PRODUCT_ID, BRAND_ID))
-                .thenReturn(Optional.of(expected));
+        when(getPriceUseCase.getApplicablePrice(date, PRODUCT_ID, BRAND_ID))
+                .thenReturn(Optional.of(price));
 
         // When
         ResponseEntity<PriceResponse> response = priceController.getPrice(date, PRODUCT_ID, BRAND_ID);
@@ -120,13 +120,13 @@ class PriceControllerTest {
     void givenDay16At21_whenGetPrice_thenReturnsPriceList4WithPrice3895() {
         // Given
         LocalDateTime date = LocalDateTime.of(2020, 6, 16, 21, 0);
-        PriceResponse expected = new PriceResponse(PRODUCT_ID, BRAND_ID, 4,
+        Price price = new Price(PRODUCT_ID, BRAND_ID, 4,
                 LocalDateTime.of(2020, 6, 15, 16, 0),
                 LocalDateTime.of(2020, 12, 31, 23, 59, 59),
                 new BigDecimal("38.95"));
 
-        when(priceService.getApplicablePrice(date, PRODUCT_ID, BRAND_ID))
-                .thenReturn(Optional.of(expected));
+        when(getPriceUseCase.getApplicablePrice(date, PRODUCT_ID, BRAND_ID))
+                .thenReturn(Optional.of(price));
 
         // When
         ResponseEntity<PriceResponse> response = priceController.getPrice(date, PRODUCT_ID, BRAND_ID);
@@ -143,7 +143,7 @@ class PriceControllerTest {
         // Given
         LocalDateTime date = LocalDateTime.of(2019, 1, 1, 0, 0);
 
-        when(priceService.getApplicablePrice(date, PRODUCT_ID, BRAND_ID))
+        when(getPriceUseCase.getApplicablePrice(date, PRODUCT_ID, BRAND_ID))
                 .thenReturn(Optional.empty());
 
         // When
@@ -154,3 +154,4 @@ class PriceControllerTest {
         assertThat(response.getBody()).isNull();
     }
 }
+

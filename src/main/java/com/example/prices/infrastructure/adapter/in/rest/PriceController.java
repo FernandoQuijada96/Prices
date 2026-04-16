@@ -1,7 +1,6 @@
-package com.example.prices.controller;
+package com.example.prices.infrastructure.adapter.in.rest;
 
-import com.example.prices.dto.PriceResponse;
-import com.example.prices.service.PriceService;
+import com.example.prices.domain.port.in.GetPriceUseCase;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,10 +13,10 @@ import java.time.LocalDateTime;
 @RequestMapping("/api/prices")
 public class PriceController {
 
-    private final PriceService priceService;
+    private final GetPriceUseCase getPriceUseCase;
 
-    public PriceController(PriceService priceService) {
-        this.priceService = priceService;
+    public PriceController(GetPriceUseCase getPriceUseCase) {
+        this.getPriceUseCase = getPriceUseCase;
     }
 
     @GetMapping
@@ -26,8 +25,9 @@ public class PriceController {
             @RequestParam("productId") Integer productId,
             @RequestParam("brandId") Integer brandId) {
 
-        return priceService.getApplicablePrice(applicationDate, productId, brandId)
-                .map(ResponseEntity::ok)
+        return getPriceUseCase.getApplicablePrice(applicationDate, productId, brandId)
+                .map(PriceResponseMapper::toResponse)
+                .map(price -> ResponseEntity.ok(price))
                 .orElse(ResponseEntity.notFound().build());
     }
 }

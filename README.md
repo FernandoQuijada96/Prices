@@ -1,85 +1,43 @@
 # Prices API
 
-REST API that retrieves the applicable price for a product and brand at a given date.
+REST API to get the applicable price for a product at a given date.
 
-## Technologies
+## Tech Stack
 
 - Java 21
 - Spring Boot 4.0.5
 - Spring Data JPA
-- H2 (in-memory database)
-- Lombok
+- H2 Database
 - Maven
 
-## Hexagonal Architecture
+## Project Structure (Hexagonal Architecture)
 
 ```
 src/main/java/com/example/prices/
-├── PricesApplication.java
 ├── domain/
-│   ├── model/
-│   │   └── Price.java                          # Pure domain record
+│   ├── model/Price.java                 # Domain entity
+│   ├── exception/                       # Domain exceptions
 │   └── port/
-│       ├── in/
-│       │   └── GetPriceUseCase.java            # Input port (use case)
-│       └── out/
-│           └── PriceRepositoryPort.java        # Output port (persistence contract)
+│       ├── in/GetPriceUseCase.java      # Input port
+│       └── out/PriceRepositoryPort.java # Output port
 ├── application/
-│   └── service/
-│       └── PriceServiceImpl.java               # Use case implementation
+│   └── service/PriceService.java        # Business logic
 └── infrastructure/
     └── adapter/
-        ├── in/
-        │   └── rest/
-        │       ├── PriceController.java        # REST input adapter
-        │       ├── PriceResponse.java          # Response DTO
-        │       └── PriceResponseMapper.java    # Mapper Price → PriceResponse
-        └── out/
-            └── persistence/
-                ├── PriceEntity.java            # JPA entity
-                ├── PriceJpaRepository.java     # Spring Data repository
-                ├── PriceEntityMapper.java      # Mapper PriceEntity → Price
-                └── PriceRepositoryAdapter.java # Output port implementation
+        ├── in/rest/                     # REST controller & DTOs
+        └── out/persistence/             # JPA repository & entities
 ```
 
-### Dependency rule
+## API
 
-```
-infrastructure  →  application  →  domain
-(adapters)         (use cases)     (model + ports)
-```
+### GET /api/prices
 
-The domain **has no external dependencies**. Adapters depend on the domain through ports.
+**Parameters:**
+- `applicationDate` - DateTime (e.g., `2020-06-14T10:00:00`)
+- `productId` - Integer
+- `brandId` - Integer
 
-## Prerequisites
-
-- Java 21+
-- Maven 3.9+
-
-## Running the application
-
-```bash
-mvn spring-boot:run
-```
-
-The application starts at `http://localhost:8080`.
-
-## Endpoint
-
-### Get applicable price
-
-```
-GET /api/prices?applicationDate={date}&productId={id}&brandId={id}
-```
-
-**Example request:**
-
-```
-GET /api/prices?applicationDate=2020-06-14T10:00:00&productId=35455&brandId=1
-```
-
-**Example response (200 OK):**
-
+**Success Response (200):**
 ```json
 {
   "productId": 35455,
@@ -91,6 +49,7 @@ GET /api/prices?applicationDate=2020-06-14T10:00:00&productId=35455&brandId=1
 }
 ```
 
-If no applicable price is found, **404 Not Found** is returned.
+**Error Responses:**
+- `400 Bad Request` - Missing or invalid parameters
+- `404 Not Found` - No price found for criteria
 
-When multiple price lists match the same date, the one with the highest **priority** is applied.

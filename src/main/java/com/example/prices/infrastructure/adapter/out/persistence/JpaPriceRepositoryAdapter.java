@@ -5,7 +5,7 @@ import com.example.prices.domain.port.out.PriceRepositoryPort;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.List;
 
 @Component
 public class JpaPriceRepositoryAdapter implements PriceRepositoryPort {
@@ -17,9 +17,11 @@ public class JpaPriceRepositoryAdapter implements PriceRepositoryPort {
     }
 
     @Override
-    public Optional<Price> findApplicablePrice(Integer brandId, Integer productId, LocalDateTime applicationDate) {
-        return priceJpaRepository.findApplicablePrice(brandId, productId, applicationDate)
-                .map(PriceEntityMapper::toDomain);
+    public List<Price> findPricesByBrandProductAndDate(Integer brandId, Integer productId, LocalDateTime applicationDate) {
+        return priceJpaRepository.findPricesByBrandProductAndDate(brandId, productId, applicationDate)
+                .stream()
+                .map(PriceEntityMapper::toDomain)
+                .toList();
     }
 }
 

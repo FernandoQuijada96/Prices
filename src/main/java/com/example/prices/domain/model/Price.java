@@ -9,7 +9,8 @@ public record Price(
         Integer priceList,
         LocalDateTime startDate,
         LocalDateTime endDate,
-        BigDecimal price
+        BigDecimal price,
+        Integer priority
 ) {
 }
 

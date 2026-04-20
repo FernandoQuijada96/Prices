@@ -14,7 +14,8 @@ public class PriceEntityMapper {
                 entity.getPriceList(),
                 entity.getStartDate(),
                 entity.getEndDate(),
-                entity.getPrice()
+                entity.getPrice(),
+                entity.getPriority()
         );
     }
 }

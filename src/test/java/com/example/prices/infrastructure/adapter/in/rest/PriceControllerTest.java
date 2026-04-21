@@ -3,16 +3,17 @@ package com.example.prices.infrastructure.adapter.in.rest;
 import com.example.prices.domain.exception.PriceNotFoundException;
 import com.example.prices.domain.model.Price;
 import com.example.prices.domain.port.in.GetPriceUseCase;
+import com.example.prices.infrastructure.config.GlobalExceptionHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -21,25 +22,28 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@ExtendWith(MockitoExtension.class)
 class PriceControllerTest {
 
     private static final String API_PRICES_URL = "/api/prices";
     private static final Integer PRODUCT_ID = 35455;
     private static final Integer BRAND_ID = 1;
 
-    @Autowired
-    private WebApplicationContext webApplicationContext;
+    @Mock
+    private GetPriceUseCase getPriceUseCase;
+
+    @InjectMocks
+    private PriceController priceController;
 
     private MockMvc mockMvc;
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        mockMvc = MockMvcBuilders
+                .standaloneSetup(priceController)
+                .setControllerAdvice(new GlobalExceptionHandler())
+                .build();
     }
-
-    @MockitoBean
-    private GetPriceUseCase getPriceUseCase;
 
     private Price buildPrice(Integer priceList, BigDecimal amount, LocalDateTime start, LocalDateTime end) {
         return new Price(PRODUCT_ID, BRAND_ID, priceList, start, end, amount, 0, "EUR");
@@ -163,4 +167,3 @@ class PriceControllerTest {
                 .andExpect(jsonPath("$.title").value("Price Not Found"));
     }
 }
-

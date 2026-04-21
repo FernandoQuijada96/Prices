@@ -3,6 +3,7 @@ package com.example.prices.infrastructure.adapter.out.persistence;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,7 +14,8 @@ import java.time.LocalDateTime;
 @Table(name = "PRICES")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
 public class PriceEntity {
 
     @Id

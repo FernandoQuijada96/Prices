@@ -121,10 +121,10 @@ class PriceControllerIntegrationTest {
                             .param("productId", PRODUCT_ID.toString())
                             .param("brandId", BRAND_ID.toString()))
                     .andExpect(status().isBadRequest())
-                    .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
                     .andExpect(jsonPath("$.status").value(400))
-                    .andExpect(jsonPath("$.error").value("Bad Request"))
-                    .andExpect(jsonPath("$.message").value("Required parameter 'applicationDate' is missing"));
+                    .andExpect(jsonPath("$.title").value("Missing Parameter"))
+                    .andExpect(jsonPath("$.detail").value("Required parameter 'applicationDate' is missing"));
         }
 
         @Test
@@ -134,10 +134,10 @@ class PriceControllerIntegrationTest {
                             .param("applicationDate", "2020-06-14T10:00:00")
                             .param("brandId", BRAND_ID.toString()))
                     .andExpect(status().isBadRequest())
-                    .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
                     .andExpect(jsonPath("$.status").value(400))
-                    .andExpect(jsonPath("$.error").value("Bad Request"))
-                    .andExpect(jsonPath("$.message").value("Required parameter 'productId' is missing"));
+                    .andExpect(jsonPath("$.title").value("Missing Parameter"))
+                    .andExpect(jsonPath("$.detail").value("Required parameter 'productId' is missing"));
         }
 
         @Test
@@ -147,10 +147,10 @@ class PriceControllerIntegrationTest {
                             .param("applicationDate", "2020-06-14T10:00:00")
                             .param("productId", PRODUCT_ID.toString()))
                     .andExpect(status().isBadRequest())
-                    .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
                     .andExpect(jsonPath("$.status").value(400))
-                    .andExpect(jsonPath("$.error").value("Bad Request"))
-                    .andExpect(jsonPath("$.message").value("Required parameter 'brandId' is missing"));
+                    .andExpect(jsonPath("$.title").value("Missing Parameter"))
+                    .andExpect(jsonPath("$.detail").value("Required parameter 'brandId' is missing"));
         }
 
         @Test
@@ -161,10 +161,10 @@ class PriceControllerIntegrationTest {
                             .param("productId", PRODUCT_ID.toString())
                             .param("brandId", BRAND_ID.toString()))
                     .andExpect(status().isBadRequest())
-                    .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
                     .andExpect(jsonPath("$.status").value(400))
-                    .andExpect(jsonPath("$.error").value("Bad Request"))
-                    .andExpect(jsonPath("$.message").value("Parameter 'applicationDate' must be of type LocalDateTime"));
+                    .andExpect(jsonPath("$.title").value("Invalid Parameter"))
+                    .andExpect(jsonPath("$.detail").value("Parameter 'applicationDate' must be of type LocalDateTime"));
         }
 
         @Test
@@ -175,10 +175,10 @@ class PriceControllerIntegrationTest {
                             .param("productId", "not-a-number")
                             .param("brandId", BRAND_ID.toString()))
                     .andExpect(status().isBadRequest())
-                    .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
                     .andExpect(jsonPath("$.status").value(400))
-                    .andExpect(jsonPath("$.error").value("Bad Request"))
-                    .andExpect(jsonPath("$.message").value("Parameter 'productId' must be of type Integer"));
+                    .andExpect(jsonPath("$.title").value("Invalid Parameter"))
+                    .andExpect(jsonPath("$.detail").value("Parameter 'productId' must be of type Integer"));
         }
 
         @Test
@@ -189,10 +189,10 @@ class PriceControllerIntegrationTest {
                             .param("productId", PRODUCT_ID.toString())
                             .param("brandId", "not-a-number"))
                     .andExpect(status().isBadRequest())
-                    .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
                     .andExpect(jsonPath("$.status").value(400))
-                    .andExpect(jsonPath("$.error").value("Bad Request"))
-                    .andExpect(jsonPath("$.message").value("Parameter 'brandId' must be of type Integer"));
+                    .andExpect(jsonPath("$.title").value("Invalid Parameter"))
+                    .andExpect(jsonPath("$.detail").value("Parameter 'brandId' must be of type Integer"));
         }
     }
 
@@ -208,10 +208,10 @@ class PriceControllerIntegrationTest {
                             .param("productId", PRODUCT_ID.toString())
                             .param("brandId", BRAND_ID.toString()))
                     .andExpect(status().isNotFound())
-                    .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
                     .andExpect(jsonPath("$.status").value(404))
-                    .andExpect(jsonPath("$.error").value("Not Found"))
-                    .andExpect(jsonPath("$.message").value("No price found for brandId=1 and productId=35455"));
+                    .andExpect(jsonPath("$.title").value("Price Not Found"))
+                    .andExpect(jsonPath("$.detail").value("No price found for brandId=1 and productId=35455"));
         }
 
         @Test
@@ -222,10 +222,10 @@ class PriceControllerIntegrationTest {
                             .param("productId", "99999")
                             .param("brandId", BRAND_ID.toString()))
                     .andExpect(status().isNotFound())
-                    .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
                     .andExpect(jsonPath("$.status").value(404))
-                    .andExpect(jsonPath("$.error").value("Not Found"))
-                    .andExpect(jsonPath("$.message").value("No price found for brandId=1 and productId=99999"));
+                    .andExpect(jsonPath("$.title").value("Price Not Found"))
+                    .andExpect(jsonPath("$.detail").value("No price found for brandId=1 and productId=99999"));
         }
 
         @Test
@@ -236,10 +236,10 @@ class PriceControllerIntegrationTest {
                             .param("productId", PRODUCT_ID.toString())
                             .param("brandId", "99"))
                     .andExpect(status().isNotFound())
-                    .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
                     .andExpect(jsonPath("$.status").value(404))
-                    .andExpect(jsonPath("$.error").value("Not Found"))
-                    .andExpect(jsonPath("$.message").value("No price found for brandId=99 and productId=35455"));
+                    .andExpect(jsonPath("$.title").value("Price Not Found"))
+                    .andExpect(jsonPath("$.detail").value("No price found for brandId=99 and productId=35455"));
         }
     }
 }

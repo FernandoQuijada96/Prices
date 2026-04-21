@@ -10,7 +10,8 @@ public record Price(
         LocalDateTime startDate,
         LocalDateTime endDate,
         BigDecimal price,
-        Integer priority
+        Integer priority,
+        String currency
 ) {
 }
 

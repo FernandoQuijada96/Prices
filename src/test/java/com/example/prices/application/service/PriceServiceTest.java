@@ -35,7 +35,7 @@ class PriceServiceTest {
     private Price buildPrice(Integer priceList, Integer priority, BigDecimal amount) {
         return new Price(PRODUCT_ID, BRAND_ID, priceList,
                 APPLICATION_DATE.minusHours(1), APPLICATION_DATE.plusHours(1),
-                amount, priority);
+                amount, priority, "EUR");
     }
 
     @Nested

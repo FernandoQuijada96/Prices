@@ -42,7 +42,7 @@ class PriceControllerTest {
     private GetPriceUseCase getPriceUseCase;
 
     private Price buildPrice(Integer priceList, BigDecimal amount, LocalDateTime start, LocalDateTime end) {
-        return new Price(PRODUCT_ID, BRAND_ID, priceList, start, end, amount, 0);
+        return new Price(PRODUCT_ID, BRAND_ID, priceList, start, end, amount, 0, "EUR");
     }
 
     @Test
